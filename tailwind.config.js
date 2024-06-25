@@ -5,6 +5,9 @@ export default {
         "./resources/**/*.js",
         "./resources/**/*.vue",
     ],
+    daisyui: {
+        themes: ["light", "dark", "cupcake", "forest","acid"],
+    },
     theme: {
         extend: {},
     },
