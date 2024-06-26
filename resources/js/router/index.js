@@ -1,17 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
 import DashboardView from '../views/DashboardView.vue';
+import {checkSession} from '../config/checkSession.js';
 
 const routes = [
-    { path: '/', component: HomeView },
-    { path: '/dashboard', component: DashboardView },
-    { path: '/login', component: () => import('../components/Login.vue') },
-    { path: '/:pathMatch(.*)*', redirect: '/' },
+    { path: '/', component: () => import('../views/HomeView.vue')},
+    { path: '/dashboard', component: DashboardView , meta: { requiresAuth: true } } ,
+    { path: '/forbidden', component: () => import('../views/error/Forbidden.vue')},
+    { path: '/:pathMatch(.*)*', component: () => import('../views/error/NotFound.vue')},
 ];
 
 const router = createRouter({
     history: createWebHistory(),
     routes,
+});
+router.beforeEach(async (to, from, next) => {
+    if (to.meta.requiresAuth) {
+        const isSessionActive = await checkSession();
+        if (!isSessionActive) {
+            next('/forbidden');
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
 });
 
 export default router;
