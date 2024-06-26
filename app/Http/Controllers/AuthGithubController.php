@@ -7,31 +7,32 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
-class AuthGoogleController extends Controller
+class AuthGithubController extends Controller
 {
     public function redirect(): \Symfony\Component\HttpFoundation\RedirectResponse|\Illuminate\Http\RedirectResponse
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('github')->redirect();
     }
 
     public function callback()
     {
         try {
-            $google_user = Socialite::driver('google')->user();
-            $user = User::where('email', $google_user->getEmail())->first();
+            $githubUser = Socialite::driver('github')->user();
+            $user = User::where('email', $githubUser->getEmail())->first();
 
             if ($user) {
                 Auth::login($user);
-                session(['google_authenticated' => true]);
+                session(['github_authenticated' => true]);
                 return redirect(env('FRONTEND_URL') . '/dashboard');
             } else {
                 $user = User::create([
-                    'name'              => $google_user->getName(),
-                    'email'             => $google_user->getEmail(),
-                    'google_id'         => $google_user->getId(),
+                    'name'              => $githubUser->getName(),
+                    'email'             => $githubUser->getEmail(),
+                    'github_id'         => $githubUser->getId(),
+                    'avatar'            => $githubUser->getAvatar(),
                     'email_verified_at' => now(),
                 ]);
-                session(['google_authenticated' => true]);
+                session(['github_authenticated' => true]);
 
                 Auth::login($user);
 
