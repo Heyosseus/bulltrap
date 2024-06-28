@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('google_id')->nullable();
             $table->string('github_id')->nullable();
             $table->string('avatar')->nullable();
+            $table->string('activation_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
