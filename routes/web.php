@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivationController;
+use App\Http\Controllers\ScraperController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,9 @@ Route::controller(\App\Http\Controllers\Auth\AuthController::class)->group(funct
     Route::post('/login', 'login')->name('login');
     Route::post('/logout', 'logout')->name('logout')->middleware('auth:sanctum');
 });
+
+Route::get('/scrape', [ScraperController::class, 'scrape']);
+
 
 Route::get('/check-session', [SessionController::class, 'checkSession'])->name('session.check-session');
 Route::get('/account/activate/{token}', [ActivationController::class, 'activate'])->name('account.activate');

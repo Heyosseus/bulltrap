@@ -4,9 +4,9 @@ import {checkSession} from '../config/checkSession.js';
 
 const routes = [
     { path: '/', component: () => import('../views/HomeView.vue')},
-    { path: '/dashboard', component: DashboardView , meta: { requiresAuth: true } } ,
+    { path: '/dashboard', name: 'Dashboard',  component: DashboardView , meta: { requiresAuth: true } } ,
     { path: '/forbidden', component: () => import('../views/error/Forbidden.vue')},
-    { path: '/:pathMatch(.*)*', component: () => import('../views/error/NotFound.vue')},
+    // { path: '/:pathMatch(.*)*', component: () => import('../views/error/NotFound.vue')},
 ];
 
 const router = createRouter({
